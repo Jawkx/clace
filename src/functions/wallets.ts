@@ -4,8 +4,15 @@ import { getAccountKeyPriv } from "../serializationLibFunctions/getAccountKeyPri
 import { SavedWalletObject } from "../models/WalletObject";
 import { walletsPath } from "../constant";
 
-export const getWallets = () => {
-  return undefined;
+export const getWallets = async () => {
+  const files = await fs.readdir(walletsPath);
+  const wallets = files.map(
+    (fileName) =>
+      JSON.parse(
+        fs.readFileSync(walletsPath + fileName, "utf-8")
+      ) as SavedWalletObject
+  );
+  return wallets;
 };
 
 export const saveWallet = (
@@ -31,7 +38,5 @@ export const saveWallet = (
 
   const walletObjectString = JSON.stringify(walletObject);
 
-  fs.outputFileSync(`${walletsPath + name}.clace`, walletObjectString, {
-    encoding: "hex",
-  });
+  fs.outputFileSync(`${walletsPath + name}.cwall`, walletObjectString);
 };

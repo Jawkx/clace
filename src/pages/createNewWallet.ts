@@ -6,6 +6,7 @@ import { displayMnemonic } from "./displayMnemonic";
 import PressToContinuePrompt from "inquirer-press-to-continue";
 import { renderHeader } from "../utils/header";
 import { saveWallet } from "../functions";
+import { start } from "./start";
 
 enum WalletInfoKeys {
   name = "name",
@@ -19,8 +20,14 @@ type WalletInfoInterface = {
 
 inquirer.registerPrompt("press-to-continue", PressToContinuePrompt);
 
-export const createNewWallet = async (retryMessage?: string) => {
-  renderHeader("New Wallet");
+export const createWallet = async (
+  retryMessage?: string,
+  entrophy?: string
+) => {
+  const isNew = !entrophy;
+  {
+    isNew ? renderHeader("New Wallet") : null;
+  }
 
   if (retryMessage)
     console.log(chalk.red.bold("PLEASE TRY AGAIN " + retryMessage));
@@ -44,14 +51,26 @@ export const createNewWallet = async (retryMessage?: string) => {
   ]);
 
   if (walletInfo.password !== walletInfo.confirmPassword) {
-    createNewWallet("Confirm password and password not match");
+    createWallet("Confirm password and password not match");
   } else {
-    const mnemonic = generateMnemonic(160);
-    const mnemonicArray = mnemonic.split(" ");
-    const entrophy = mnemonicToEntropy(mnemonic);
+    let walletEntrophy = "";
+    if (isNew) {
+      const mnemonic = generateMnemonic(160);
+      const mnemonicArray = mnemonic.split(" ");
+      walletEntrophy = mnemonicToEntropy(mnemonic);
+      await displayMnemonic(mnemonicArray);
+    } else {
+      walletEntrophy = entrophy;
+    }
 
-    await displayMnemonic(mnemonicArray);
+    saveWallet(
+      walletInfo.name.replace(/\s/g, ""), // This to remove whitespace
+      walletInfo.password,
+      walletEntrophy
+    );
 
-    saveWallet(walletInfo.name, walletInfo.password, entrophy);
+    start(
+      isNew ? "Successfully created wallet" : "Successfully imported wallet"
+    );
   }
 };
