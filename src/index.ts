@@ -1,4 +1,4 @@
 #!/usr/bin/env node
-import { starting } from "./routes";
+import { start } from "./pages";
 
-starting();
+start();

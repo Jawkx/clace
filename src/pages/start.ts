@@ -1,17 +1,18 @@
 import chalk from "chalk";
 import figlet from "figlet";
 import inquirer from "inquirer";
+import { getWallets } from "../functions";
+import { renderHeader } from "../utils/header";
 import { createNewWallet } from "./createNewWallet";
-import { getWallets } from "./helpers/checkWallet";
 
 enum Selections {
   Create_New_Wallet = "Create_New_Wallet",
   Import_Wallet = "Import_Wallet",
 }
 
-export const starting = async () => {
+export const start = async () => {
   console.clear();
-  console.log(figlet.textSync("CLACE", { font: "Standard" }));
+  renderHeader("CLACE");
 
   const wallets = getWallets();
 
@@ -30,7 +31,7 @@ export const starting = async () => {
     });
 
     if (selection.selected === Selections.Create_New_Wallet) {
-      createNewWallet();
+      await createNewWallet();
     }
   }
 };
