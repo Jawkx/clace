@@ -18,8 +18,6 @@ export const saveWallet = (
 
   const accountPrivKeyBech32 = accountPrivKey.to_bech32();
 
-  console.log(accountPrivKeyBech32);
-
   const encryptedAccountPrivKey = AES.encrypt(
     accountPrivKeyBech32,
     password
