@@ -1,1 +1,1 @@
-export const walletsPath = "./wallets/";
+export const walletsPath = "wallets/";
