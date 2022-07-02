@@ -5,6 +5,7 @@ import { generateMnemonic, mnemonicToEntropy } from "bip39";
 import { displayMnemonic } from "./displayMnemonic";
 import PressToContinuePrompt from "inquirer-press-to-continue";
 import { renderHeader } from "../utils/header";
+import { saveWallet } from "../functions";
 
 enum WalletInfoKeys {
   name = "name",
@@ -13,12 +14,12 @@ enum WalletInfoKeys {
 }
 
 type WalletInfoInterface = {
-  [val in WalletInfoKeys]: String;
+  [val in WalletInfoKeys]: string;
 };
 
 inquirer.registerPrompt("press-to-continue", PressToContinuePrompt);
 
-export const createNewWallet = async (retryMessage?: String) => {
+export const createNewWallet = async (retryMessage?: string) => {
   renderHeader("New Wallet");
 
   if (retryMessage)
@@ -51,10 +52,6 @@ export const createNewWallet = async (retryMessage?: String) => {
 
     await displayMnemonic(mnemonicArray);
 
-    console.clear();
-    console.log({
-      name: walletInfo.name,
-      encryptedVal: entrophy,
-    });
+    saveWallet(walletInfo.name, walletInfo.password, entrophy);
   }
 };

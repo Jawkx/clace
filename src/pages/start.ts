@@ -1,5 +1,4 @@
 import chalk from "chalk";
-import figlet from "figlet";
 import inquirer from "inquirer";
 import { getWallets } from "../functions";
 import { renderHeader } from "../utils/header";
