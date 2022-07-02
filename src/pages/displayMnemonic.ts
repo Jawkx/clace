@@ -34,4 +34,6 @@ export const displayMnemonic = async (mnemonicArray: String[]) => {
     anyKey: true,
     pressToContinueMessage: "Press any key to continue, ...",
   });
+
+  console.clear();
 };
