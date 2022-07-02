@@ -11,9 +11,7 @@ enum Selections {
 }
 
 export const start = async () => {
-  console.clear();
   renderHeader("CLACE");
-
   const wallets = getWallets();
 
   if (!wallets) {
